@@ -13,7 +13,7 @@ function getDaysOfMonth(){
 
 function getYears(){
 	$currentYear= date("Y");
-	for($i=$currentYear; $i<=$currentYear+5; $i++){
+	for($i=$currentYear-3; $i<=$currentYear+5; $i++){
 		$yearList[$i]=$i;
 	}
 	return $yearList;
