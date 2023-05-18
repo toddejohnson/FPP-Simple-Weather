@@ -29,7 +29,7 @@ function getDaysOfMonth(){
 
 function getYears(){
 	global $setyear;
-    if $setyear>date("Y"){
+    if ($setyear>date("Y")){
         $setyear=date("Y");
     }
 	for($i=$setyear; $i<=date("Y")+5; $i++){
