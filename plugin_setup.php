@@ -42,6 +42,46 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 <html>
 <head>
 <style>
+
+* {
+  box-sizing: border-box;
+}
+
+.subheader {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@media screen and (max-width: 1000px) {
+  div.graphic {
+    display: none;
+  }
+
 .matrix-tool-bottom-panel {
 	padding-top: 0px !important;
 }
@@ -156,6 +196,31 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 
 </head>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="subheader">
+	<h1><?php echo $pluginName . " Version: ". $pluginVersion;?> Installation Instructions</h1>
+</div>
+<div class="row">
+	<div class="col-7">
+	
+		<p><b>This plugin requires ACCURATE date and time for its calculation.</b></p>
+		Configuration:
+		<ul>
+		<li>Configure the date and time of your event</li>
+		<li>Enter in the Pre Text and Post Text that will appear in your countdown</li>
+		<li>Enter the name of your Target date</li>
+		<li>Make sure you have your Pixel Overlay Model Selected (usually your Matrix)</li>
+				<li>The Countdown will display immediatly when activated by an FPP Command or Command Preset</li>
+				<li>If the remaining time is less than a day, the plugin will automatically display the hours and minutes remaining.</li>
+				<li>You can configure the plugin to display a message once the target date/time has been reached or</li>
+				<li>have the plugin start counting up from the target date/time.
+				</ul>
+	</div>
+	<div class="col-5 graphic">
+		<img src="images/plugin/FPP-Simple-Countdown/countdownRGB.gif" alt="test">
+	</div>			
+			
+</div>
     <div id="EventDate" class="settings">
 		<fieldset>
 			<legend><?php echo $pluginName . " Version: ". $pluginVersion;?> Installation Instructions</legend>

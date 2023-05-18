@@ -1,5 +1,21 @@
 <?php
 
+include_once("/opt/fpp/www/common.php");
+$pluginName = basename(dirname(__FILE__));
+$pluginConfigFile = $settings['configDirectory'] . "/plugin." .$pluginName;
+
+if (file_exists($pluginConfigFile)){
+	$pluginSettings = parse_ini_file($pluginConfigFile);
+}else{
+	$pluginSettings = array(); //There have been no settings saved by the user, create empty array
+}
+
+if (isset($pluginSettings['YEAR'])){
+	$setyear = $pluginSettings['YEAR'];
+}else{
+	$setyear = date("Y")-1;	
+}
+
 function getMonths(){
 	return $monthList= array('January' => 1, 'February' => 2, 'March' => 3, 'April' => 4, 'May' => 5, 'June' => 6, 'July' => 7, 'August' => 8, 'September' => 9, 'October' => 10, 'November' => 11, 'December' => 12);
 }
@@ -12,8 +28,8 @@ function getDaysOfMonth(){
 }
 
 function getYears(){
-	$currentYear= date("Y");
-	for($i=$currentYear-3; $i<=$currentYear+5; $i++){
+	global $setyear;
+	for($i=$setyear; $i<=date("Y"); $i++){
 		$yearList[$i]=$i;
 	}
 	return $yearList;
