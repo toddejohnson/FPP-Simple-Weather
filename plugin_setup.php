@@ -217,27 +217,9 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 				</ul>
 	</div>
 	<div class="col-5 graphic">
-		<img src="images/plugin/FPP-Simple-Countdown/countdownRGB.gif" alt="test">
+		<img src="images/plugin/FPP-Simple-Countdown/countdownRGB.gif" alt="animated countdown">
 	</div>			
 			
-</div>
-    <div id="EventDate" class="settings">
-		<fieldset>
-			<legend><?php echo $pluginName . " Version: ". $pluginVersion;?> Installation Instructions</legend>
-			<p><b>This plugin requires ACCURATE date and time for its calculation.</b></p>
-			Configuration:
-			<ul>
-			<li>Configure the date and time of your event</li>
-			<li>Enter in the Pre Text and Post Text that will appear in your countdown</li>
-			<li>Enter the name of your Target date</li>
-			<li>Make sure you have your Pixel Overlay Model Selected (usually your Matrix)</li>
-			<li>The Countdown will display immediatly when activated by an FPP Command or Command Preset</li>
-			<li>If the remaining time is less than a day, the plugin will automatically display the hours and minutes remaining.</li>
-			<li>You can configure the plugin to display a message once the target date/time has been reached or</li>
-			<li>have the plugin start counting up from the target date/time.
-			</ul>
-		</fieldset>
-	</div>
 	<div>
 		
 		<p>Target Date: <? PrintSettingSelect("MONTH", "MONTH", 0, 0, $defaultValue= "1", getMonths(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?> 
