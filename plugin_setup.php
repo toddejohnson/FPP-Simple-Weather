@@ -81,6 +81,7 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
   div.graphic {
     display: none;
   }
+}
 
 .matrix-tool-bottom-panel {
 	padding-top: 0px !important;
@@ -108,6 +109,7 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 
 .colorButton {
 	-moz-transition: border-color 250ms ease-in-out 0s;
+	transition: border-color 250ms ease-in-out 0s;
 	background-clip: padding-box;
 	border: 2px solid rgba(0, 0, 0, 0.25);
 	border-radius: 50% 50% 50% 50%;
@@ -122,13 +124,13 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
     border: 2px solid #000000;
 }
 #scroll-container {
-  border: 3px solid black;
-  border-radius: 5px;
-  overflow: hidden;
+	width: 1000px;
+  	border: 3px solid black;
+  	border-radius: 5px;
+  	overflow: hidden;
 }
 
-#scroll-text {
-	
+#scroll-text {	
 	font-weight: bold; 
 	font-size: 30px;
 	
@@ -137,9 +139,9 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
   -webkit-transform: translateX(100%);
   transform: translateX(100%);
   
-  -moz-animation: my-animation 15s linear infinite;
-  -webkit-animation: my-animation 15s linear infinite;
-  animation: my-animation 15s linear infinite;
+  -moz-animation: my-animation 7s linear infinite;
+  -webkit-animation: my-animation 7s linear infinite;
+  animation: my-animation 7s linear infinite;
 }
 
 /* for Firefox */
@@ -201,20 +203,28 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 	<h1><?php echo $pluginName . " Version: ". $pluginVersion;?> Installation Instructions</h1>
 </div>
 <div class="row">
-	<div class="col-7">
-	
-		<p><b>This plugin requires ACCURATE date and time for its calculation.</b></p>
-		Configuration:
+	<div class="col-7">	
+	<p><b>This plugin requires ACCURATE date and time for its calculation.</b></p>
+		<h4>Configuration:</h4>
 		<ul>
-		<li>Configure the date and time of your event</li>
-		<li>Enter in the Pre Text and Post Text that will appear in your countdown</li>
-		<li>Enter the name of your Target date</li>
-		<li>Make sure you have your Pixel Overlay Model Selected (usually your Matrix)</li>
-				<li>The Countdown will display immediatly when activated by an FPP Command or Command Preset</li>
-				<li>If the remaining time is less than a day, the plugin will automatically display the hours and minutes remaining.</li>
-				<li>You can configure the plugin to display a message once the target date/time has been reached or</li>
-				<li>have the plugin start counting up from the target date/time.
-				</ul>
+			<li>Configure the date and time of your event</li>
+			<li>Enter in the Pre Text and Post Text that will appear in your countdown</li>
+			<li>Enter the name of your Target date</li>
+			<li>Make sure you have your Pixel Overlay Model Selected (usually your Matrix)</li>
+			<li>The Countdown will display immediatly when activated by an FPP Command or Command Preset</li>
+			<li>If the remaining time is less than a day, the plugin will automatically display the hours and minutes remaining.</li>
+			<li>You can configure the plugin to display a message once the target date/time has been reached or</li>
+			<li>Have the plugin start counting up from the target date/time.
+		</ul>
+		<h4>Operation:</h4>
+		<ul>
+			<li>The Simple Countdown is triggered by an FPP Command</li>
+			<li>The Countdown will display one time per FPP Command</li>
+			<li>If you want a repeating Countdown, you can create a repeating schedule</li>
+			<li>Just make sure that you put a pause in your playlist</li>
+			<li>Refer to the FPP Manual for more information</li>
+			<li><a href="https://falconchristmas.github.io/FPP_Manual.pdf" target="_blank">FPP Manual</a></li>
+		</ul>
 	</div>
 	<div class="col-5 graphic">
 		<img src="images/plugin/FPP-Simple-Countdown/countdownRGB.gif" alt="animated countdown">
