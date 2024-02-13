@@ -13,7 +13,7 @@ if (file_exists($pluginConfigFile)){
 if (isset($pluginSettings['YEAR'])){
 	$setyear = $pluginSettings['YEAR'];
 }else{
-	$setyear = date("Y")-1;	
+	$setyear = date("Y");	
 }
 
 function getMonths(){
@@ -32,7 +32,7 @@ function getYears(){
     if ($setyear>date("Y")){
         $setyear=date("Y");
     }
-	for($i=$setyear; $i<=date("Y")+5; $i++){
+	for($i=$setyear-2; $i<=date("Y")+5; $i++){
 		$yearList[$i]=$i;
 	}
 	return $yearList;
@@ -142,18 +142,15 @@ function ScrollText($host="127.0.0.1", $model, $msg, $Position, $Font, $FontSize
 
 
 function logEntry($data,$logLevel=1) {
-
 	global $logFile,$myPid, $LOG_LEVEL;
-
 	
 	if($logLevel <= $LOG_LEVEL) 
 		return
 		
-		$data = $_SERVER['PHP_SELF']." : [".$myPid."] ".$data;
-		
-		$logWrite= fopen($logFile, "a") or die("Unable to open file!");
-		fwrite($logWrite, date('Y-m-d h:i:s A',time()).": ".$data."\n");
-		fclose($logWrite);
+	$data = $_SERVER['PHP_SELF']." : [".$myPid."] ".$data;		
+	$logWrite= fopen($logFile, "a") or die("Unable to open file!");
+	fwrite($logWrite, date('Y-m-d h:i:s A',time()).": ".$data."\n");
+	fclose($logWrite);
 }
 
 ?>

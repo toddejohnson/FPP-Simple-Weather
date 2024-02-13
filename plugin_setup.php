@@ -170,32 +170,6 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 }
 
 </style>
-<script type="text/javascript">
-
-    function ShowColorPicker() {
-		if ($('#ShowColorPicker').is(':checked')) {
-            $('#colpicker').show();
-        } else {
-            $('#colpicker').hide();
-        }
-    }
-
-	function setColor(color, updateColpicker = true) {
-		if (color.substring(0,1) != '#')
-			color = '#' + color;
-
-        pluginSettings['COLOR'] = color;
-        SetPluginSetting('<?php echo $pluginName; ?>', 'COLOR', color, 0, 0);
-        $('#currentColor').css('background-color', color);
-
-		currentColor = color;
-
-        if (updateColpicker)
-		    $('#colpicker').colpickSetColor(color);
-		
-	}
-</script>
-
 </head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -229,10 +203,11 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 	<div class="col-5 graphic">
 		<img src="images/plugin/FPP-Simple-Countdown/countdownRGB.gif" alt="animated countdown">
 	</div>			
-			
-	<div>
-		
-		<p>Target Date: <? PrintSettingSelect("MONTH", "MONTH", 0, 0, $defaultValue= "1", getMonths(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?> 
+</div>			
+<div class="row">
+	<div class="col-12">
+		<p>ENABLE PLUGIN: <?PrintSettingCheckbox("Event Date Plugin", "ENABLED", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "", $changedFunction=""); ?> </p>
+		<p>Target Date: <? PrintSettingSelect("MONTH", "MONTH", 0, 0, $defaultValue= "1", getMonths(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
 		<? PrintSettingSelect("DAY", "DAY", 0, 0, $defaultValue= "1", getDaysOfMonth(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
 		<? PrintSettingSelect("YEAR", "YEAR", 0, 0, $defaultValue= date("Y")+1, getYears(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
 		Hour: <? PrintSettingSelect("HOUR", "HOUR", 0, 0, $defaultValue= "0", getHours(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
@@ -241,6 +216,7 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 		<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspxx days xx hours</p>
 		<p>Post Text <?  PrintSettingTextSaved("POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "until", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		<p>Target Title: <?  PrintSettingTextSaved("EVENT_NAME", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "The Event!", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+	
 		<div id ="showCompleted" style= "<? echo $showCompleteDiv; ?>">
 			<p>Countdown Completed Text: <?  PrintSettingTextSaved("COMPLETED_MESSAGE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "Countdown Completed!", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
@@ -248,19 +224,21 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 			<p>Count Up Pre Text: <?  PrintSettingTextSaved("COUNTUP_PRE_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "It has been", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 			<p>Count Up Post Text: <?  PrintSettingTextSaved("COUNTUP_POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "since", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
+		
 		<p>Count up: <?PrintSettingCheckbox("COUNT_UP", "COUNT_UP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "ShowCountUp", $changedFunction = ""); ?> 
-		With this set, when the target date/time is reached, the counter will count up using the Count Up text. If not, it will use the Completed Text.</p>
+		&nbsp With this set, when the target date/time is reached, the counter will count up using the Count Up text. If not, it will use the Completed Text.</p>
 		<p><h3>If the remaining time is more than a day then you can select to include the hours and/or minutes.</br>
 		</h3></p>
 		<p>Include Hours: <?PrintSettingCheckbox("INCLUDE_HOURS", "INCLUDE_HOURS", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputTextHours", $changedFunction = ""); ?> </p>
-		<p>Include Minutes: <?PrintSettingCheckbox("INCLUDE_MINUTES", "INCLUDE_MINUTES", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputTextMinutes", $changedFunction = ""); ?> </p>
+		<p>Include Minutes: <?PrintSettingCheckbox("INCLUDE_MINUTES", "INCLUDE_MINUTES", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputTextHours", $changedFunction = ""); ?> </p>
 		<p>Your message will appear as:</p>
-		<div class= "marquee" id="scroll-container" >
-			<p id="scroll-text">Countdown </p>
+		<div id="scroll-container" >
+			<div id="scroll-text">Countdown </div>
 		</div>
-		<br /><p>Font: <? PrintSettingSelect("FONT", "FONT", 0, 0, $defaultValue="", getFontsInstalled(), $pluginName, $callbackName = "", $changedFunction = ""); ?>
+		
+		<br /><div>Font: <? PrintSettingSelect("fontSelect", "FONT", 0, 0, $defaultValue="", getFontsInstalled(), $pluginName, $callbackName = "updateFont", $changedFunction = ""); ?>
 		Font Size: <? PrintSettingSelect("FONT_SIZE", "FONT_SIZE", 0, 0, $defaultValue="20", getFontSizes(), $pluginName, $callbackName = "", $changedFunction = ""); ?>
-		Anti-Aliased: <?PrintSettingCheckbox("FONT_ANTIALIAS", "FONT_ANTIALIAS", 0, 0, "1", "", $pluginName , ""); ?></p> 
+		Anti-Aliased: <?PrintSettingCheckbox("FONT_ANTIALIAS", "FONT_ANTIALIAS", 0, 0, "1", "", $pluginName , ""); ?></div> 
 		
 		<div id= "divCanvas" class='ui-tabs-panel matrix-tool-bottom-panel'>
 			<table border=0>
@@ -303,20 +281,38 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 			<li>Transparent RGB- This will display your message over the top of whatever is displaying on your matrix <br/>
 			the colors will override what is currently being displayed</li> 
 		</ul>
-		<p>ENABLE PLUGIN: <?PrintSettingCheckbox("Event Date Plugin", "ENABLED", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "", $changedFunction=""); ?> </p>
-		<p>To report a bug, please file it against Simple Countdown plugin project on Git:<? echo $gitURL;?> </p>
+		
+		<p>To report a bug, please file it on the Simple Countdown plugin project on Git:<a href= "<? echo $gitURL;?>" target=blank>Simple Countdown Repository</a> </p>
 		<p>Host Location: <?  PrintSettingTextSaved("HOST_LOCATION", 0, 0, $maxlength = 16, $size = 16, $pluginName, $defaultValue = "127.0.0.1", $callbackName = "", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		<p>The default location of 127.0.0.1 is used if you want to display your Countdown on an Overlay Model directly connected to this device. <br />
 		You can send the Countdown text to another FPP device by entering that IP address for the Host Location. The Host location will need <br />
 		to have the Pixel Overlay Model defined and this FPP will need to have the Pixel Overlay Model defined exactly as the Host FPP Device</p>
 	</div>
-  
+</div>
 
 <script>
 updateOutputText();
+ShowColorPicker();
 
-//$("#matrixTabs").tabs({active: 0, cache: true, spinner: "", fx: { opacity: 'toggle', height: 'toggle' } });
+function ShowColorPicker() {
+	if ($('#ShowColorPicker').is(':checked')) {
+            $('#colpicker').show();
+    } else {
+            $('#colpicker').hide();
+    }
+}
 
+function setColor(color, updateColpicker = true) {
+	if (color.substring(0,1) != '#')
+		color = '#' + color;
+    pluginSettings['COLOR'] = color;
+    SetPluginSetting('<?php echo $pluginName; ?>', 'COLOR', color, 0, 0);
+    $('#currentColor').css('background-color', color);
+	currentColor = color;
+    if (updateColpicker)
+		$('#colpicker').colpickSetColor(color);
+		
+}
     var colpickTimer = null;
 	$('#colpicker').colpick({
 		flat: true,
@@ -335,17 +331,20 @@ updateOutputText();
         currentColor = pluginSettings['COLOR'];
         $('#currentColor').css('background-color', currentColor);
     }
+	
 function updateOutputTextHours(updateOutput){
-updateOutputText();	
-}
-
-function updateOutputTextMinutes(updateOutput){
-updateOutputText();	
+	updateOutputText();	
 }
 
 function updateOutputText(){
 	var messageText= getMessageText();
 	document.getElementById("scroll-text").innerHTML = messageText;
+}
+
+function updateFont(){
+	var fontStyle= document.getElementById("FONT").value;
+	document.getElementById('scroll-text').style.fontFamily = fontStyle;	
+	updateOutputText();
 }
 
 function getMessageText(){
@@ -364,7 +363,7 @@ function getMessageText(){
 	var incHours = document.getElementById("INCLUDE_HOURS").checked;
 	var incMin = document.getElementById("INCLUDE_MINUTES").checked;
 	var countup = document.getElementById("COUNT_UP").checked;
-	var eventDate = new Date(eventYear, eventMonth, eventDay, eventHour, eventMin  );
+	var eventDate = new Date(eventYear, eventMonth, eventDay, eventHour, eventMin);
 	var currentDate= new Date();
 	var rawTimeDiff = (eventDate - currentDate)/1000; 
 	var yearsToDate = rawTimeDiff/(60*60*24*365);
@@ -476,7 +475,6 @@ function ShowCountUp(){
 		updateOutputText();
 	}	
 }
-ShowColorPicker();
-</script>
 
+</script>
 </html>
