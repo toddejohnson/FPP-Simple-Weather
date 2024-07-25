@@ -8,11 +8,19 @@
     "bugURL": "https://github.com/FalconChristmas/FPP-Simple-Countdown/issues",
     "allowUpdates": 1,
     "versions": [
-            {
-                "minFPPVersion": "4.6",
-                "maxFPPVersion": "0",
-                "branch": "main",
-                "sha": ""
-            }
+        {
+            "minFPPVersion": "4.6",
+            "maxFPPVersion": "7.99",
+            "branch": "main",
+            "sha": "",
+            "allowUpdates": 1
+        },
+        {
+            "minFPPVersion": "8.0",
+            "maxFPPVersion": "0",
+            "branch": "main",
+            "sha": "",
+            "allowUpdates": 1
+        }   
     ]
 }
