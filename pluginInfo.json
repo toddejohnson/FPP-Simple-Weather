@@ -1,11 +1,11 @@
 {
-    "repoName": "FPP-Simple-Countdown",
-    "name": "Simple Countdown",
-    "author": "Rick Harris",
-    "description": "This plugin will give you a countdown to a specified date. This plugin is standalone and does not require any other plugins to run.",
-    "homeURL": "https://github.com/FalconChristmas/FPP-Simple-Countdown",
-    "srcURL": "https://github.com/FalconChristmas/FPP-Simple-Countdown.git",
-    "bugURL": "https://github.com/FalconChristmas/FPP-Simple-Countdown/issues",
+    "repoName": "FPP-Simple-Weather",
+    "name": "Simple Weather",
+    "author": "Todd Johnson",
+    "description": "This plugin will give you the weather for a specified location. This plugin is standalone and does not require any other plugins to run.",
+    "homeURL": "https://github.com/toddejohnson/FPP-Simple-Weather",
+    "srcURL": "https://github.com/toddejohnson/FPP-Simple-Weather.git",
+    "bugURL": "https://github.com/toddejohnson/FPP-Simple-Weather/issues",
     "allowUpdates": 1,
     "versions": [
         {

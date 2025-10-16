@@ -1,6 +1,6 @@
 [
-    { "name": "Simple Countdown-Run",
-      "script": "RUN-SIMPLE_COUNTDOWN-SCRIPT.sh",
+    { "name": "Simple Weather-Run",
+      "script": "RUN-SIMPLE_WEATHER-SCRIPT.sh",
       "args": [
       ]
     }
