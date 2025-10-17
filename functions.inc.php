@@ -10,44 +10,7 @@ if (file_exists($pluginConfigFile)){
 	$pluginSettings = array(); //There have been no settings saved by the user, create empty array
 }
 
-if (isset($pluginSettings['YEAR'])){
-	$setyear = $pluginSettings['YEAR'];
-}else{
-	$setyear = date("Y");	
-}
 
-function getMonths(){
-	return $monthList= array('January' => 1, 'February' => 2, 'March' => 3, 'April' => 4, 'May' => 5, 'June' => 6, 'July' => 7, 'August' => 8, 'September' => 9, 'October' => 10, 'November' => 11, 'December' => 12);
-}
-
-function getDaysOfMonth(){
-	for($i=1; $i<=31; $i++){
-		$daysList[$i]=$i;
-	}
-	return $daysList;
-}
-
-function getYears(){
-	global $setyear;
-    if ($setyear>date("Y")){
-        $setyear=date("Y");
-    }
-	for($i=$setyear-2; $i<=date("Y")+5; $i++){
-		$yearList[$i]=$i;
-	}
-	return $yearList;
-}
-
-function getHours(){
-	return $hours= array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
-}
-
-function getMinutes(){
-	for( $i= 0; $i<=59; $i++){
-		$minuteList[str_pad($i,2,'0',STR_PAD_LEFT)] = $i;
-	}
-	return $minuteList;
-}
 function GetOverlayList() { 
 	$modelsList = GetModels("");
 	for($i=0;$i<=count($modelsList)-1;$i++) {
@@ -151,6 +114,76 @@ function logEntry($data,$logLevel=1) {
 	$logWrite= fopen($logFile, "a") or die("Unable to open file!");
 	fwrite($logWrite, date('Y-m-d h:i:s A',time()).": ".$data."\n");
 	fclose($logWrite);
+}
+
+function getOpenWeatherMap($api_key, $lat=null, $lon=null, $city=null, $state=null, $country=null){
+    $url = "http://api.openweathermap.org/data/2.5/weather?";
+    if(isset($city) && isset($state) && isset($country)){
+      $url .= "q=$city,$state,$country";
+    }elseif(isset($lat) && isset($lon)){
+      $url .= "lat=$lat&lon=$lon";
+    }else{
+      logEntry("weather: lat/lon or city/state/country required");
+      exit(1);
+    }
+    $url .= "&APPID=".$api_key;
+    logEntry( "weather url: ".$url);
+
+    $ch = curl_init();
+    // Disable SSL verification
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // Will return the response, if false it print the response
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Set the url
+    curl_setopt($ch, CURLOPT_URL,$url);
+    // Execute
+    $result=curl_exec($ch);
+    // Closing
+    curl_close($ch);
+
+    logEntry( "weather result: ".$result);
+    $weatherData= json_decode($result,true);
+	$temp = round((($weatherData['main']['temp']-273.15)*1.8)+32,1);
+	$humidity = $weatherData['main']['humidity'];
+	$wind = $weatherData['wind'];
+
+    return array(
+        'temp' => $temp,
+        'humidity' => $humidity,
+        'wind' => $wind,
+    );
+}
+function getAmbientWeather($api_key, $app_key, $device){
+    $url = "https://api.ambientweather.net/v1/devices?";
+    $url .= "applicationKey=$app_key&apiKey=$api_key";
+    logEntry( "weather url: ".$url);
+
+    $ch = curl_init();
+    // Disable SSL verification
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // Will return the response, if false it print the response
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Set the url
+    curl_setopt($ch, CURLOPT_URL,$url);
+    // Execute
+    $result=curl_exec($ch);
+    // Closing
+    curl_close($ch);
+
+    logEntry( "weather result: ".$result);
+    $weatherData= json_decode($result,true);
+	$temp = $weatherData[$device]['lastData']['tempf'];
+	$humidity = $weatherData[$device]['lastData']['humidity'];
+	$wind = array(
+        "speed" => $weatherData[$device]['lastData']['windspeedmph'],
+        "deg" => $weatherData[$device]['lastData']['winddir'],
+    );
+
+    return array(
+        'temp' => $temp,
+        'humidity' => $humidity,
+        'wind' => $wind,
+    );
 }
 
 ?>

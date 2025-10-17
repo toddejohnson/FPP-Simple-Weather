@@ -10,31 +10,29 @@ $pluginName = basename(dirname(__FILE__));
 
 $logFile = $settings['logDirectory']."/".$pluginName.".log";
 
-$showScrollDiv="display:none";
-if (isset($pluginSettings['SCROLL_SPEED'])){
-	$scrollSpeed= $pluginSettings['SCROLL_SPEED'];
-	if ($scrollSpeed==0){
-		$showScrollDiv	="display:block";
-	}else{
-		$showScrollDiv ="display:none";
+$showOpenWeatherMapDiv="display:none";
+$showAmbientWeatherDiv="display:none";
+$showCityDiv="display:none";
+$showLatLonDiv="display:none";
+if (isset($pluginSettings['WEATHER_API'])){
+	$weatherApi=$pluginSettings['WEATHER_API'];
+	if ($weatherApi == 'OpenWeatherMap'){
+		$showOpenWeatherMapDiv="display:block";
+		if (isset($pluginSettings['LOOKUP_TYPE'])){
+			$lookupType=$pluginSettings['LOOKUP_TYPE'];
+		  if($lookupType=0){
+				$showLatLonDiv="display:block";
+			}else{
+				$showCityDiv="display:block";
+			}
+		}
+	}elseif($weatherApi == 'AmbientWeather'){
+		$showAmbientWeatherDiv="display:block";
 	}
-	
 }
 
-$showCountUpDiv="display:none";
-$showCompleteDiv= "display:block";
-if (isset($pluginSettings['COUNT_UP'])){
-	$countUp= $pluginSettings['COUNT_UP'];
-	if ($countUp=="ON"){
-		$showCountUpDiv	="display:block";
-		$showCompleteDiv= "display:none";
-	}else{
-		$showCountUpDiv ="display:none";
-	}
-	
-}
 
-$gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
+$gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 
 
 ?>
@@ -177,63 +175,60 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 	<h1><?php echo $pluginName . " Version: ". $pluginVersion;?> Installation Instructions</h1>
 </div>
 <div class="row">
-	<div class="col-7">	
-	<p><b>This plugin requires ACCURATE date and time for its calculation.</b></p>
+	<div class="col-12">	
 		<h4>Configuration:</h4>
 		<ul>
-			<li>Configure the date and time of your event</li>
-			<li>Enter in the Pre Text and Post Text that will appear in your countdown</li>
-			<li>Enter the name of your Target date</li>
-			<li>Make sure you have your Pixel Overlay Model Selected (usually your Matrix)</li>
-			<li>The Countdown will display immediatly when activated by an FPP Command or Command Preset</li>
-			<li>If the remaining time is less than a day, the plugin will automatically display the hours and minutes remaining.</li>
-			<li>You can configure the plugin to display a message once the target date/time has been reached or</li>
-			<li>Have the plugin start counting up from the target date/time.
+			<li>Configure your City & 2 Character State & Separator Character to display</li>
+			<li>Not all City and State combinations are supported. If not, you can select the Other Country option</br>
+			and use your Latitude and Longitude settings to get your local weather.<p>
+			<p>Link to settings: <a href=settings.php#settings-localization> System tab</a></p>
+			<li>Visit <a href="http://home.openweathermap.org/" target="_blank">http://home.openweathermap.org/</a> to sign up for an API KEY</li>
 		</ul>
 		<h4>Operation:</h4>
 		<ul>
-			<li>The Simple Countdown is triggered by an FPP Command (Run Simple Countdown)</li>
-			<li>The Countdown will display one time per FPP Command</li>
-			<li>If you want a repeating Countdown, you can create a repeating schedule</li>
+			<li>The Simple Weather is triggered by an FPP Command (Run Simple Weather)</li>
+			<li>The Weather will display one time per FPP Command</li>
+			<li>If you want a repeating Weather, you can create a repeating schedule</li>
 			<li>Just make sure that you put a pause in your playlist</li>
 			<li>Refer to the FPP Manual for more information</li>
 			<li><a href="https://falconchristmas.github.io/FPP_Manual.pdf" target="_blank">FPP Manual</a></li>
 		</ul>
 	</div>
-	<div class="col-5 graphic">
-		<img src="images/plugin/FPP-Simple-Countdown/countdownRGB.gif" alt="animated countdown">
-	</div>			
 </div>			
 <div class="row">
 	<div class="col-12">
 		<p>ENABLE PLUGIN: <?PrintSettingCheckbox("Event Date Plugin", "ENABLED", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "", $changedFunction=""); ?> </p>
-		<p>Target Date: <? PrintSettingSelect("MONTH", "MONTH", 0, 0, $defaultValue= "1", getMonths(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
-		<? PrintSettingSelect("DAY", "DAY", 0, 0, $defaultValue= "1", getDaysOfMonth(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
-		<? PrintSettingSelect("YEAR", "YEAR", 0, 0, $defaultValue= date("Y")+1, getYears(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
-		Hour: <? PrintSettingSelect("HOUR", "HOUR", 0, 0, $defaultValue= "0", getHours(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?>
-		Min: <? PrintSettingSelect("MIN", "MIN", 0, 0, $defaultValue= "0", getMinutes(), $pluginName, $callbackName = "updateOutputText", $changedFunction = ""); ?></p>
 		<p>Pre Text: <?  PrintSettingTextSaved("PRE_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "It is", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspxx days xx hours</p>
-		<p>Post Text <?  PrintSettingTextSaved("POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "until", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-		<p>Target Title: <?  PrintSettingTextSaved("EVENT_NAME", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "The Event!", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<p>Post Text <?  PrintSettingTextSaved("POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "now", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<p>Weather API: <? PrintSettingSelect("WEATHER_API", "WEATHER_API", 0, 0, "", Array("OpenWeatherMap" => "OpenWeatherMap", "AmbientWeather" => "AmbientWeather"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 	
-		<div id ="showCompleted" style= "<? echo $showCompleteDiv; ?>">
-			<p>Countdown Completed Text: <?  PrintSettingTextSaved("COMPLETED_MESSAGE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "Countdown Completed!", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<div id ="showOpenWeatherMap" style= "<? echo $showOpenWeatherMapDiv; ?>">
+			<p>Open Weather Map API Key: <?  PrintSettingTextSaved("OpenWeatherMap", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>Lookup Type: <? PrintSettingSelect("LOOKUP_TYPE", "LOOKUP_TYPE", 0, 0, "", Array("Lat/Lon" => 0, "City/State" => 1), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+			<div id ="showCity" style= "<? echo $showCityDiv; ?>">
+				<p>City: <?  PrintSettingTextSaved("CITY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+				<p>State: <?  PrintSettingTextSaved("STATE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+				<p>Country: <?  PrintSettingTextSaved("COUNTRY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			</div>
+			<div id ="showLatLon" style= "<? echo $showLatLonDiv; ?>">
+				<p>Lat: <?  PrintSettingTextSaved("Lat", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+				<p>Lon: <?  PrintSettingTextSaved("Lon", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			</div>
 		</div>
-		<div id = "showCountUp" style= "<? echo $showCountUpDiv; ?>">
-			<p>Count Up Pre Text: <?  PrintSettingTextSaved("COUNTUP_PRE_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "It has been", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>Count Up Post Text: <?  PrintSettingTextSaved("COUNTUP_POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "since", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<div id ="showAmbientWeather" style= "<? echo $showAmbientWeatherDiv; ?>">
+			<p>AmbientWeather API Key: <?  PrintSettingTextSaved("AmbientWeatherAPI", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>AmbientWeather APP Key: <?  PrintSettingTextSaved("AmbientWeatherAPP", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>AmbientWeather Device: <?  PrintSettingTextSaved("AWDevice", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "0", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
 		
-		<p>Count up: <?PrintSettingCheckbox("COUNT_UP", "COUNT_UP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "ShowCountUp", $changedFunction = ""); ?> 
-		&nbsp With this set, when the target date/time is reached, the counter will count up using the Count Up text. If not, it will use the Completed Text.</p>
-		<p><h3>If the remaining time is more than a day then you can select to include the hours and/or minutes.</br>
-		</h3></p>
-		<p>Include Hours: <?PrintSettingCheckbox("INCLUDE_HOURS", "INCLUDE_HOURS", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputTextHours", $changedFunction = ""); ?> </p>
-		<p>Include Minutes: <?PrintSettingCheckbox("INCLUDE_MINUTES", "INCLUDE_MINUTES", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputTextHours", $changedFunction = ""); ?> </p>
+	
+		<p>Include Temp: <?PrintSettingCheckbox("INCLUDE_TEMP", "INCLUDE_TEMP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Include Wind: <?PrintSettingCheckbox("INCLUDE_WIND", "INCLUDE_WIND", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Include Humidity: <?PrintSettingCheckbox("INCLUDE_HUMIDITY", "INCLUDE_HUMIDITY", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
 		<p>Your message will appear as:</p>
 		<div id="scroll-container" >
-			<div id="scroll-text">Countdown </div>
+			<div id="scroll-text">Weather </div>
 		</div>
 		
 		<br /><div>Font: <? PrintSettingSelect("fontSelect", "FONT", 0, 0, $defaultValue="", getFontsInstalled(), $pluginName, $callbackName = "updateFont", $changedFunction = ""); ?>
@@ -282,10 +277,10 @@ $gitURL = "https://github.com/FalconChristmas/FPP-Simple-Countdown.git";
 			the colors will override what is currently being displayed</li> 
 		</ul>
 		
-		<p>To report a bug, please file it on the Simple Countdown plugin project on Git:<a href= "<? echo $gitURL;?>" target=blank>Simple Countdown Repository</a> </p>
+		<p>To report a bug, please file it on the Simple Weather plugin project on Git:<a href= "<? echo $gitURL;?>" target=blank>Simple Weather Repository</a> </p>
 		<p>Host Location: <?  PrintSettingTextSaved("HOST_LOCATION", 0, 0, $maxlength = 16, $size = 16, $pluginName, $defaultValue = "127.0.0.1", $callbackName = "", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-		<p>The default location of 127.0.0.1 is used if you want to display your Countdown on an Overlay Model directly connected to this device. <br />
-		You can send the Countdown text to another FPP device by entering that IP address for the Host Location. The Host location will need <br />
+		<p>The default location of 127.0.0.1 is used if you want to display your Weather on an Overlay Model directly connected to this device. <br />
+		You can send the Weather text to another FPP device by entering that IP address for the Host Location. The Host location will need <br />
 		to have the Pixel Overlay Model defined and this FPP will need to have the Pixel Overlay Model defined exactly as the Host FPP Device</p>
 	</div>
 </div>
@@ -332,10 +327,6 @@ function setColor(color, updateColpicker = true) {
         $('#currentColor').css('background-color', currentColor);
     }
 	
-function updateOutputTextHours(updateOutput){
-	updateOutputText();	
-}
-
 function updateOutputText(){
 	var messageText= getMessageText();
 	document.getElementById("scroll-text").innerHTML = messageText;
@@ -464,17 +455,6 @@ function ShowDuration(){
 	}
 }
 
-function ShowCountUp(){
-	if (document.getElementById('COUNT_UP').checked == true){
-		document.getElementById('showCountUp').style.display = "block";
-		document.getElementById('showCompleted').style.display = "none";
-		updateOutputText();
-	}else{
-		document.getElementById('showCountUp').style.display = "none";
-		document.getElementById('showCompleted').style.display = "block";
-		updateOutputText();
-	}	
-}
 
 </script>
 </html>
