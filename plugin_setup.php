@@ -339,110 +339,28 @@ function updateFont(){
 }
 
 function getMessageText(){
-	var elapsed = false; 
-	var eventName = document.getElementById("EVENT_NAME").value;
-	var eventMonth = parseInt(document.getElementById("MONTH").value)-1;
-	var eventDay = document.getElementById("DAY").value;
-	var eventYear = document.getElementById("YEAR").value;
-	var eventHour = document.getElementById("HOUR").value;
-	var eventMin = document.getElementById("MIN").value;
 	var preText = document.getElementById("PRE_TEXT").value;
 	var postText = document.getElementById("POST_TEXT").value;
-	var CountUpPreText = document.getElementById("COUNTUP_PRE_TEXT").value;
-	var CountUpPostText = document.getElementById("COUNTUP_POST_TEXT").value;	
-	var completedText = document.getElementById("COMPLETED_MESSAGE").value;
-	var incHours = document.getElementById("INCLUDE_HOURS").checked;
-	var incMin = document.getElementById("INCLUDE_MINUTES").checked;
-	var countup = document.getElementById("COUNT_UP").checked;
-	var eventDate = new Date(eventYear, eventMonth, eventDay, eventHour, eventMin);
-	var currentDate= new Date();
-	var rawTimeDiff = (eventDate - currentDate)/1000; 
-	var yearsToDate = rawTimeDiff/(60*60*24*365);
-	var daysToDate = (rawTimeDiff/(60*60*24))%365;
-	var hoursToDate = (rawTimeDiff/(60*60))%24;
-	var minutesToDate = (rawTimeDiff/60)%60 +1;
+	var incTemp = document.getElementById("INCLUDE_TEMP").checked;
+	var temp = 0;
+	var incWind = document.getElementById("INCLUDE_WIND").checked;
+	var wind = 'N 2'
+	var incHumidity = document.getElementById("INCLUDE_HUMIDITY").checked;
+	var humidity = 30;
 	var messageText;
-	var messagePreText;
-	var messagePostText;
-	if (rawTimeDiff<0){
-		elapsed= true;
-	}
-	if (elapsed && !countup){
-		messageText= completedText;
-		return messageText;
-	}
 				
-	yearsToDate= Math.floor(Math.abs(yearsToDate));
-	daysToDate= Math.floor(Math.abs(daysToDate));
-	hoursToDate =Math.floor(Math.abs(hoursToDate));
-	minutesToDate= Math.floor(Math.abs(minutesToDate));
+	messageText = preText + " ";
 	
-	if (elapsed && countup){
-		messagePreText= CountUpPreText;
-		messagePostText= CountUpPostText;
-		minutesToDate+= 1;
-	}else{
-		messagePreText= preText;
-		messagePostText= postText;	
+	if(incTemp == true){
+		messageText += "Temp: "+temp+"°F ";
 	}
-
-	messageText = messagePreText;
-
-	if (yearsToDate >= 1){
-		if (yearsToDate >=2){
-			messageText += " " + yearsToDate + " years ";
-		}else {
-			messageText += " " + yearsToDate + " year ";
-		}
-	}else{
-		messageText += " ";
+	if(incWind == true){
+		messageText += "Wind: "+wind+"MPH ";
 	}
-
-	if (daysToDate >= 1){
-		if (daysToDate >=2){
-			messageText += daysToDate + " days ";
-		} else {
-			messageText += daysToDate + " day ";			
-		}
-
-		if(incHours == true){			
-			if (hoursToDate >=2) {
-				messageText += hoursToDate + " hours ";
-			} else {
-				if (hoursToDate >= 1) {
-					messageText += hoursToDate + " hour ";
-				}
-			}
-		}
-		
-		if(incMin == true){
-			if(incHours == false){
-				minutesToDate += hoursToDate*60;
-			}
-			if (minutesToDate >=2) {
-				messageText += minutesToDate + " minutes ";
-			} else {
-				messageText += minutesToDate + " minute ";
-			}	
-		}	
-	}else {
-			
-		if (hoursToDate >=2) {
-			messageText += hoursToDate + " hours ";
-		} else {
-			if (hoursToDate >= 1) {
-					messageText += hoursToDate + " hour ";
-			}
-		}
-		
-		if (minutesToDate >=2) {
-			messageText += minutesToDate + " minutes ";
-		} else {
-			messageText += minutesToDate + " minute ";
-		}	
-	}           
-        
-	messageText += messagePostText + " " + eventName;
+  if(incHumidity == true){
+		messageText += "Humidity: "+humidity+" ";
+	}
+	messageText +=postText;
 	return messageText;
 }
 
