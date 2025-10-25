@@ -186,4 +186,20 @@ function getAmbientWeather($api_key, $app_key, $device){
     );
 }
 
+function tempF2C($temp){
+    return ($temp-32)*5/9;
+}
+
+function windMPH2MS($speed){
+    return 0.44704*$speed;
+}
+
+function windMPH2KMH($speed){
+    return 1.609344*$speed;
+}
+
+function windMPH2KN($speed){
+    return 0.8689762*$speed;
+}
+
 ?>
