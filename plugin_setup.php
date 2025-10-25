@@ -344,8 +344,10 @@ function getMessageText(){
 	var preText = document.getElementById("PRE_TEXT").value;
 	var postText = document.getElementById("POST_TEXT").value;
 	var incTemp = document.getElementById("INCLUDE_TEMP").checked;
+	var tempUnits = document.getElementById("TEMP_UNITS").value;
 	var temp = 0;
 	var incWind = document.getElementById("INCLUDE_WIND").checked;
+	var windUnits = document.getElementById("WIND_UNITS").value;
 	var wind = 'N 2'
 	var incHumidity = document.getElementById("INCLUDE_HUMIDITY").checked;
 	var humidity = 30;
@@ -354,10 +356,10 @@ function getMessageText(){
 	messageText = preText + " ";
 	
 	if(incTemp == true){
-		messageText += "Temp: "+temp+"°F ";
+		messageText += "Temp: "+temp+"°"+tempUnits+" ";
 	}
 	if(incWind == true){
-		messageText += "Wind: "+wind+"MPH ";
+		messageText += "Wind: "+wind+windUnits+" ";
 	}
   if(incHumidity == true){
 		messageText += "Humidity: "+humidity+" ";
