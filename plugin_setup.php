@@ -224,7 +224,9 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 		
 	
 		<p>Include Temp: <?PrintSettingCheckbox("INCLUDE_TEMP", "INCLUDE_TEMP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Temp Units: <? PrintSettingSelect("TEMP_UNITS", "TEMP_UNITS", 0, 0, "", Array("C" => "C", "F" => "F"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 		<p>Include Wind: <?PrintSettingCheckbox("INCLUDE_WIND", "INCLUDE_WIND", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Wind Units: <? PrintSettingSelect("WIND_UNITS", "WIND_UNITS", 0, 0, "", Array("mph" => "mph", "m/s" => "m/s", "km/h" => "km/h", "kn" => "kn"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 		<p>Include Humidity: <?PrintSettingCheckbox("INCLUDE_HUMIDITY", "INCLUDE_HUMIDITY", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
 		<p>Your message will appear as:</p>
 		<div id="scroll-container" >

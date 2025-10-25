@@ -127,12 +127,24 @@ if (isset($pluginSettings['INCLUDE_TEMP'])){
 	$includeTemp = "";
 	logEntry("Include temp not specifically defined, using default");
 }
+if (isset($pluginSettings['TEMP_UNITS'])){
+    $tempUnits = $pluginSettings['TEMP_UNITS'];
+}else{
+	$tempUnits = "C";
+	logEntry("Temp Units not specifically defined, using default");
+}
 
 if (isset($pluginSettings['INCLUDE_WIND'])){
     $includeWind = $pluginSettings['INCLUDE_WIND'];
 }else{
 	$includeWind = "";
 	logEntry("Include wind not specifically defined, using default");
+}
+if (isset($pluginSettings['WIND_UNITS'])){
+    $windUnits = $pluginSettings['WIND_UNITS'];
+}else{
+	$windUnits = "m/s";
+	logEntry("Wind Units not specifically defined, using default");
 }
 
 if (isset($pluginSettings['INCLUDE_HUMIDITY'])){
@@ -238,7 +250,11 @@ if($weatherApi=="OpenWeatherMap"){
 
 $messageText = "$preText ";
 if($includeTemp == "ON"){
-	$messageText .= "Temp: ".$weather['temp']."°F ";
+	if($tempUnits=="C"){
+		$messageText .= "Temp: ".(($weather['temp']-32)*5/9)."°C ";
+	}else{
+		$messageText .= "Temp: ".$weather['temp']."°F ";
+	}
 }
 if($includeWind == "ON"){
 	$windDeg = $weather['wind']['deg'];
@@ -261,7 +277,17 @@ if($includeWind == "ON"){
 	} elseif($windDeg > 282 && $windDeg <= 348) {
 		$windDir = "NW";
 	} 
-	$messageText .= "Wind: $windDir ".$weather['wind']['speed']."MPH ";
+	if($windUnits=='mph'){
+		$windSpeed = $weather['wind']['speed']."mph";
+	}elseif($windUnits=='km/h'){
+		$windSpeed = windMPH2KMH($weather['wind']['speed'])."km/h";
+	}elseif($windUnits=='kn'){
+		$windSpeed = windMPH2KN($weather['wind']['speed'])."kn";
+	}else{
+		$windSpeed = windMPH2MS($weather['wind']['speed'])."m/s";
+	}
+
+	$messageText .= "Wind: $windDir $windSpeed ";
 }
 if($includeHumidity == "ON"){
 	$messageText .= "Humidity: ".$weather['humidity']." ";
