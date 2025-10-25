@@ -6,17 +6,6 @@ $pluginName = basename(dirname(__FILE__));
 $skipJSsettings = 1;
 include_once("/opt/fpp/www/common.php");
 include_once("functions.inc.php");
-$logFile = $settings['logDirectory']."/".$pluginName.".log";
-$pluginConfigFile = $settings['configDirectory'] . "/plugin." .$pluginName;
-
-//get settings and if no user stored setting, use a default value
-
-if (file_exists($pluginConfigFile)){
-	$pluginSettings = parse_ini_file($pluginConfigFile);
-}else{
-	$pluginSettings = array(); //There have been no settings saved by the user, create empty array
-	logEntry("Plugin no config found");
-}
 
 if (isset($pluginSettings['ENABLED'])){
     $enabled = $pluginSettings['ENABLED'];
