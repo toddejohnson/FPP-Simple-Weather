@@ -71,6 +71,26 @@ if($weatherApi=="OpenWeatherMap"){
 			logEntry("COUNTRY not specifically defined, using default");
 		}
 	}
+}elseif($weatherApi=="PirateWeather"){
+  if (isset($pluginSettings['PirateWeather'])){
+		$pirateWeather=$pluginSettings['PirateWeather'];
+	}else{
+		$pirateWeather="";
+	  logEntry("PirateWeather API key not defined, exiting");
+	  exit(1);
+	}
+	if (isset($pluginSettings['LAT'])){
+		$LAT = $pluginSettings['LAT'];
+	}else{
+		$LAT = "";
+		logEntry("LAT not specifically defined, using default");
+	}
+	if (isset($pluginSettings['LON'])){
+			$LON = $pluginSettings['LON'];
+	}else{
+		$LON = "";
+		logEntry("LON not specifically defined, using default");
+	}
 }elseif($weatherApi=="AmbientWeather"){
   if (isset($pluginSettings['AmbientWeatherAPI'])){
 		$ambientWeatherApi=$pluginSettings['AmbientWeatherAPI'];
@@ -230,6 +250,8 @@ if($weatherApi=="OpenWeatherMap"){
 	}elseif($lookupType==1){
 		$weather = getOpenWeatherMap($openWeatherMap,null,null,$CITY,$STATE,$COUNTRY);
 	}
+}else if($weatherApi=="PirateWeather"){
+	$weather = getPirateWeather($pirateWeather,$LAT,$LON);
 }else if($weatherApi=="AmbientWeather"){
 	$weather = getAmbientWeather($ambientWeatherApi,$ambientWeatherApp,$AWDEVICE);
 }else{

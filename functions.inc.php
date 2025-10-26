@@ -154,6 +154,40 @@ function getOpenWeatherMap($api_key, $lat=null, $lon=null, $city=null, $state=nu
         'wind' => $wind,
     );
 }
+function getPirateWeather($api_key, $lat, $lon){
+    $url = "https://api.pirateweather.net/forecast";
+    $url .= "/".urlencode($api_key);
+    $url .= "/".urlencode("$lat,$lon");
+    $url .= "?units=us";
+    logEntry( "weather url: ".$url);
+
+    $ch = curl_init();
+    // Disable SSL verification
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // Will return the response, if false it print the response
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Set the url
+    curl_setopt($ch, CURLOPT_URL,$url);
+    // Execute
+    $result=curl_exec($ch);
+    // Closing
+    curl_close($ch);
+
+    logEntry( "weather result: ".$result);
+    $weatherData= json_decode($result,true);
+	$temp = $weatherData['currently']['temperature'];
+	$humidity = $weatherData['currently']['humidity'];
+	$wind = array(
+        "speed" => $weatherData['currently']['windSpeed'],
+        "deg" => $weatherData['currently']['windBearing'],
+    );
+
+    return array(
+        'temp' => $temp,
+        'humidity' => $humidity,
+        'wind' => $wind,
+    );
+}
 function getAmbientWeather($api_key, $app_key, $device){
     $url = "https://api.ambientweather.net/v1/devices?";
     $url .= "applicationKey=$app_key&apiKey=$api_key";
