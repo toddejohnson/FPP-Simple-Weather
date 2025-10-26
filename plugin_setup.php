@@ -28,7 +28,8 @@ if (isset($pluginSettings['WEATHER_API'])){
 			}
 		}
 	}elseif($weatherApi == 'PirateWeather'){
-		$showPirateWeatherDiv="display:block";
+    $showPirateWeatherDiv="display:block";
+	  $showLatLonDiv="display:block";
 	}elseif($weatherApi == 'AmbientWeather'){
 		$showAmbientWeatherDiv="display:block";
 	}
@@ -204,32 +205,29 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 		<p>Pre Text: <?  PrintSettingTextSaved("PRE_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "It is", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspxx days xx hours</p>
 		<p>Post Text <?  PrintSettingTextSaved("POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "now", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-		<p>Weather API: <? PrintSettingSelect("WEATHER_API", "WEATHER_API", 0, 0, "", Array("OpenWeatherMap" => "OpenWeatherMap", "AmbientWeather" => "AmbientWeather","Pirate Weather" => "Pirate Weather"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		<p>Weather API: <? PrintSettingSelect("WEATHER_API", "WEATHER_API", 0, 0, "", Array("OpenWeatherMap" => "OpenWeatherMap", "AmbientWeather" => "AmbientWeather","PirateWeather" => "PirateWeather"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 	
 		<div id ="showOpenWeatherMap" style= "<? echo $showOpenWeatherMapDiv; ?>">
 			<p><a href="https://api.openweathermap.org/">Open Weather Map API</a> Key: <?  PrintSettingTextSaved("OpenWeatherMap", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 			<p>Lookup Type: <? PrintSettingSelect("LOOKUP_TYPE", "LOOKUP_TYPE", 0, 0, "", Array("Lat/Lon" => 0, "City/State" => 1), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
-			<div id ="showCity" style= "<? echo $showCityDiv; ?>">
-				<p>City: <?  PrintSettingTextSaved("CITY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-				<p>State: <?  PrintSettingTextSaved("STATE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-				<p>Country: <?  PrintSettingTextSaved("COUNTRY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			</div>
-			<div id ="showLatLon" style= "<? echo $showLatLonDiv; ?>">
-				<p>Lat: <?  PrintSettingTextSaved("Lat", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-				<p>Lon: <?  PrintSettingTextSaved("Lon", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			</div>
 		</div>
 		<div id ="showPirateWeather" style= "<? echo $showPirateWeatherDiv; ?>">
 			<p><a href="https://docs.pirateweather.net/">Pirate Weather API</a> Key: <?  PrintSettingTextSaved("PirateWeather", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>Lat: <?  PrintSettingTextSaved("Lat", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>Lon: <?  PrintSettingTextSaved("Lon", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
 		<div id ="showAmbientWeather" style= "<? echo $showAmbientWeatherDiv; ?>">
 			<p><a href="https://ambientweather.com/faqs/question/view/id/1811/?srsltid=AfmBOoppEAQYKPD651SXgUIbzCzx3tEhTbJ7GpkMWMCuQfvRgrPGl3nc">AmbientWeather</a> API Key: <?  PrintSettingTextSaved("AmbientWeatherAPI", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 			<p>AmbientWeather APP Key: <?  PrintSettingTextSaved("AmbientWeatherAPP", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 			<p>AmbientWeather Device: <?  PrintSettingTextSaved("AWDevice", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "0", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
-		
+		<div id ="showCity" style= "<? echo $showCityDiv; ?>">
+			<p>City: <?  PrintSettingTextSaved("CITY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>State: <?  PrintSettingTextSaved("STATE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>Country: <?  PrintSettingTextSaved("COUNTRY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		</div>
+		<div id ="showLatLon" style= "<? echo $showLatLonDiv; ?>">
+			<p>Lat: <?  PrintSettingTextSaved("Lat", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>Lon: <?  PrintSettingTextSaved("Lon", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		</div>		
 	
 		<p>Include Temp: <?PrintSettingCheckbox("INCLUDE_TEMP", "INCLUDE_TEMP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
 		<p>Temp Units: <? PrintSettingSelect("TEMP_UNITS", "TEMP_UNITS", 0, 0, "", Array("C" => "C", "F" => "F"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>

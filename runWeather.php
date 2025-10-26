@@ -39,17 +39,17 @@ if($weatherApi=="OpenWeatherMap"){
 	}
 	logEntry("Lookup type: $lookupType");
   if($lookupType==0){
-		if (isset($pluginSettings['LAT'])){
-				$LAT = $pluginSettings['LAT'];
+		if (isset($pluginSettings['Lat'])){
+				$Lat = $pluginSettings['Lat'];
 		}else{
-			$LAT = "";
-			logEntry("LAT not specifically defined, using default");
+			$Lat = "";
+			logEntry("Lat not specifically defined, using default");
 		}
-		if (isset($pluginSettings['LON'])){
-				$LON = $pluginSettings['LON'];
+		if (isset($pluginSettings['Lon'])){
+				$Lon = $pluginSettings['Lon'];
 		}else{
-			$LON = "";
-			logEntry("LON not specifically defined, using default");
+			$Lon = "";
+			logEntry("Lon not specifically defined, using default");
 		}
 	}else{
 		if (isset($pluginSettings['CITY'])){
@@ -79,17 +79,17 @@ if($weatherApi=="OpenWeatherMap"){
 	  logEntry("PirateWeather API key not defined, exiting");
 	  exit(1);
 	}
-	if (isset($pluginSettings['LAT'])){
-		$LAT = $pluginSettings['LAT'];
+	if (isset($pluginSettings['Lat'])){
+		$Lat = $pluginSettings['Lat'];
 	}else{
-		$LAT = "";
-		logEntry("LAT not specifically defined, using default");
+		$Lat = "";
+		logEntry("Lat not specifically defined, using default");
 	}
-	if (isset($pluginSettings['LON'])){
-			$LON = $pluginSettings['LON'];
+	if (isset($pluginSettings['Lon'])){
+			$Lon = $pluginSettings['Lon'];
 	}else{
-		$LON = "";
-		logEntry("LON not specifically defined, using default");
+		$Lon = "";
+		logEntry("Lon not specifically defined, using default");
 	}
 }elseif($weatherApi=="AmbientWeather"){
   if (isset($pluginSettings['AmbientWeatherAPI'])){
@@ -246,12 +246,12 @@ if (isset($pluginSettings['COLOR'])){
 
 if($weatherApi=="OpenWeatherMap"){
 	if($lookupType==0){
-		$weather = getOpenWeatherMap($openWeatherMap,$LAT,$LON);
+		$weather = getOpenWeatherMap($openWeatherMap,$Lat,$Lon);
 	}elseif($lookupType==1){
 		$weather = getOpenWeatherMap($openWeatherMap,null,null,$CITY,$STATE,$COUNTRY);
 	}
 }else if($weatherApi=="PirateWeather"){
-	$weather = getPirateWeather($pirateWeather,$LAT,$LON);
+	$weather = getPirateWeather($pirateWeather,$Lat,$Lon);
 }else if($weatherApi=="AmbientWeather"){
 	$weather = getAmbientWeather($ambientWeatherApi,$ambientWeatherApp,$AWDEVICE);
 }else{
