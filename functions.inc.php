@@ -184,7 +184,7 @@ function getPirateWeather($api_key, $lat, $lon){
 
     return array(
         'temp' => $temp,
-        'humidity' => $humidity,
+        'humidity' => $humidity *100,
         'wind' => $wind,
     );
 }
