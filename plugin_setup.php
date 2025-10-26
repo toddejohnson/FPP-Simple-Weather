@@ -12,6 +12,7 @@ $logFile = $settings['logDirectory']."/".$pluginName.".log";
 
 $showOpenWeatherMapDiv="display:none";
 $showAmbientWeatherDiv="display:none";
+$showPirateWeatherDiv="display:none";
 $showCityDiv="display:none";
 $showLatLonDiv="display:none";
 if (isset($pluginSettings['WEATHER_API'])){
