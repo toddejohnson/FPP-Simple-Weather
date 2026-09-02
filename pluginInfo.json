@@ -6,6 +6,7 @@
     "homeURL": "https://github.com/toddejohnson/FPP-Simple-Weather",
     "srcURL": "https://github.com/toddejohnson/FPP-Simple-Weather.git",
     "bugURL": "https://github.com/toddejohnson/FPP-Simple-Weather/issues",
+    "iconURL": "https://raw.githubusercontent.com/toddejohnson/FPP-Simple-Weather/main/icon.png",
     "allowUpdates": 1,
     "versions": [
         {
@@ -17,16 +18,15 @@
         },
         {
             "minFPPVersion": "8.0",
-            "maxFPPVersion": "0",
+            "maxFPPVersion": "9.99",
             "branch": "main",
-            "sha": "",
-            "allowUpdates": 1
+            "sha": ""
         },
         {
-			"minFPPVersion": "9.0",
-			"maxFPPVersion": "0",
-			"branch": "main",
-			"sha": ""
-		}
+            "minFPPVersion": "10.0",
+            "maxFPPVersion": "0",
+            "branch": "main",
+            "sha": ""
+        }
     ]
 }

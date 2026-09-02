@@ -8,31 +8,37 @@ include_once 'version.inc';
 $pluginName = basename(dirname(__FILE__));
 
 
-$logFile = $settings['logDirectory']."/".$pluginName.".log";
+$logFile = $settings['logDirectory']."/plugin-".$pluginName.".log";
 
 $showOpenWeatherMapDiv="display:none";
 $showAmbientWeatherDiv="display:none";
 $showPirateWeatherDiv="display:none";
 $showCityDiv="display:none";
 $showLatLonDiv="display:none";
+$showScrollDiv="display:none";
+
 if (isset($pluginSettings['WEATHER_API'])){
 	$weatherApi=$pluginSettings['WEATHER_API'];
 	if ($weatherApi == 'OpenWeatherMap'){
 		$showOpenWeatherMapDiv="display:block";
 		if (isset($pluginSettings['LOOKUP_TYPE'])){
 			$lookupType=$pluginSettings['LOOKUP_TYPE'];
-		  if($lookupType=0){
+			if($lookupType == 0){
 				$showLatLonDiv="display:block";
 			}else{
 				$showCityDiv="display:block";
 			}
 		}
 	}elseif($weatherApi == 'PirateWeather'){
-    $showPirateWeatherDiv="display:block";
-	  $showLatLonDiv="display:block";
+		$showPirateWeatherDiv="display:block";
+		$showLatLonDiv="display:block";
 	}elseif($weatherApi == 'AmbientWeather'){
 		$showAmbientWeatherDiv="display:block";
 	}
+}
+
+if (isset($pluginSettings['SCROLL_SPEED']) && $pluginSettings['SCROLL_SPEED'] == "0") {
+	$showScrollDiv="display:block";
 }
 
 
@@ -54,6 +60,11 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
   padding: 20px;
   text-align: center;
 }
+/* FPP10 dark mode only — base/light (and FPP9) rendering left unchanged. */
+[data-bs-theme="dark"] .subheader { background-color: var(--bs-secondary-bg); }
+[data-bs-theme="dark"] #currentColor { border-color: var(--bs-border-color); }
+[data-bs-theme="dark"] #scroll-container { border-color: var(--bs-border-color); }
+
 
 .col-1 {width: 8.33%;}
 .col-2 {width: 16.66%;}
@@ -201,47 +212,47 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 </div>			
 <div class="row">
 	<div class="col-12">
-		<p>ENABLE PLUGIN: <?PrintSettingCheckbox("Event Date Plugin", "ENABLED", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "", $changedFunction=""); ?> </p>
-		<p>Pre Text: <?  PrintSettingTextSaved("PRE_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "It is", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<p>ENABLE PLUGIN: <?php PrintSettingCheckbox("Event Date Plugin", "ENABLED", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "", $changedFunction=""); ?> </p>
+		<p>Pre Text: <?php PrintSettingTextSaved("PRE_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "It is", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		<p>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspxx days xx hours</p>
-		<p>Post Text <?  PrintSettingTextSaved("POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "now", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-		<p>Weather API: <? PrintSettingSelect("WEATHER_API", "WEATHER_API", 0, 0, "", Array("OpenWeatherMap" => "OpenWeatherMap", "AmbientWeather" => "AmbientWeather","PirateWeather" => "PirateWeather"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		<p>Post Text <?php PrintSettingTextSaved("POST_TEXT", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "now", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<p>Weather API: <?php PrintSettingSelect("WEATHER_API", "WEATHER_API", 0, 0, "", Array("OpenWeatherMap" => "OpenWeatherMap", "AmbientWeather" => "AmbientWeather","PirateWeather" => "PirateWeather"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 	
-		<div id ="showOpenWeatherMap" style= "<? echo $showOpenWeatherMapDiv; ?>">
-			<p><a href="https://api.openweathermap.org/">Open Weather Map API</a> Key: <?  PrintSettingTextSaved("OpenWeatherMap", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>Lookup Type: <? PrintSettingSelect("LOOKUP_TYPE", "LOOKUP_TYPE", 0, 0, "", Array("Lat/Lon" => 0, "City/State" => 1), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		<div id ="showOpenWeatherMap" style= "<?php echo $showOpenWeatherMapDiv; ?>">
+			<p><a href="https://api.openweathermap.org/">Open Weather Map API</a> Key: <?php PrintSettingTextSaved("OpenWeatherMap", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>Lookup Type: <?php PrintSettingSelect("LOOKUP_TYPE", "LOOKUP_TYPE", 0, 0, "", Array("Lat/Lon" => 0, "City/State" => 1), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 		</div>
-		<div id ="showPirateWeather" style= "<? echo $showPirateWeatherDiv; ?>">
-			<p><a href="https://docs.pirateweather.net/">Pirate Weather API</a> Key: <?  PrintSettingTextSaved("PirateWeather", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<div id ="showPirateWeather" style= "<?php echo $showPirateWeatherDiv; ?>">
+			<p><a href="https://docs.pirateweather.net/">Pirate Weather API</a> Key: <?php PrintSettingTextSaved("PirateWeather", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
-		<div id ="showAmbientWeather" style= "<? echo $showAmbientWeatherDiv; ?>">
-			<p><a href="https://ambientweather.com/faqs/question/view/id/1811/?srsltid=AfmBOoppEAQYKPD651SXgUIbzCzx3tEhTbJ7GpkMWMCuQfvRgrPGl3nc">AmbientWeather</a> API Key: <?  PrintSettingTextSaved("AmbientWeatherAPI", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>AmbientWeather APP Key: <?  PrintSettingTextSaved("AmbientWeatherAPP", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>AmbientWeather Device: <?  PrintSettingTextSaved("AWDevice", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "0", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<div id ="showAmbientWeather" style= "<?php echo $showAmbientWeatherDiv; ?>">
+			<p><a href="https://ambientweather.com/faqs/question/view/id/1811/?srsltid=AfmBOoppEAQYKPD651SXgUIbzCzx3tEhTbJ7GpkMWMCuQfvRgrPGl3nc">AmbientWeather</a> API Key: <?php PrintSettingTextSaved("AmbientWeatherAPI", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>AmbientWeather APP Key: <?php PrintSettingTextSaved("AmbientWeatherAPP", 0, 0, $maxlength = 70, $size = 70, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>AmbientWeather Device: <?php PrintSettingTextSaved("AWDevice", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "0", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
-		<div id ="showCity" style= "<? echo $showCityDiv; ?>">
-			<p>City: <?  PrintSettingTextSaved("CITY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>State: <?  PrintSettingTextSaved("STATE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>Country: <?  PrintSettingTextSaved("COUNTRY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<div id ="showCity" style= "<?php echo $showCityDiv; ?>">
+			<p>City: <?php PrintSettingTextSaved("CITY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>State: <?php PrintSettingTextSaved("STATE", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>Country: <?php PrintSettingTextSaved("COUNTRY", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>
-		<div id ="showLatLon" style= "<? echo $showLatLonDiv; ?>">
-			<p>Lat: <?  PrintSettingTextSaved("Lat", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
-			<p>Lon: <?  PrintSettingTextSaved("Lon", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<div id ="showLatLon" style= "<?php echo $showLatLonDiv; ?>">
+			<p>Lat: <?php PrintSettingTextSaved("Lat", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+			<p>Lon: <?php PrintSettingTextSaved("Lon", 0, 0, $maxlength = 32, $size = 32, $pluginName, $defaultValue = "", $callbackName = "updateOutputText", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		</div>		
 	
-		<p>Include Temp: <?PrintSettingCheckbox("INCLUDE_TEMP", "INCLUDE_TEMP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
-		<p>Temp Units: <? PrintSettingSelect("TEMP_UNITS", "TEMP_UNITS", 0, 0, "", Array("C" => "C", "F" => "F"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
-		<p>Include Wind: <?PrintSettingCheckbox("INCLUDE_WIND", "INCLUDE_WIND", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
-		<p>Wind Units: <? PrintSettingSelect("WIND_UNITS", "WIND_UNITS", 0, 0, "", Array("mph" => "mph", "m/s" => "m/s", "km/h" => "km/h", "kn" => "kn"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
-		<p>Include Humidity: <?PrintSettingCheckbox("INCLUDE_HUMIDITY", "INCLUDE_HUMIDITY", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Include Temp: <?php PrintSettingCheckbox("INCLUDE_TEMP", "INCLUDE_TEMP", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Temp Units: <?php PrintSettingSelect("TEMP_UNITS", "TEMP_UNITS", 0, 0, "", Array("C" => "C", "F" => "F"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		<p>Include Wind: <?php PrintSettingCheckbox("INCLUDE_WIND", "INCLUDE_WIND", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
+		<p>Wind Units: <?php PrintSettingSelect("WIND_UNITS", "WIND_UNITS", 0, 0, "", Array("mph" => "mph", "m/s" => "m/s", "km/h" => "km/h", "kn" => "kn"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		<p>Include Humidity: <?php PrintSettingCheckbox("INCLUDE_HUMIDITY", "INCLUDE_HUMIDITY", 0, 0, "ON", "OFF", $pluginName ,$callbackName = "updateOutputText", $changedFunction = ""); ?> </p>
 		<p>Your message will appear as:</p>
 		<div id="scroll-container" >
 			<div id="scroll-text">Weather </div>
 		</div>
 		
-		<br /><div>Font: <? PrintSettingSelect("fontSelect", "FONT", 0, 0, $defaultValue="", getFontsInstalled(), $pluginName, $callbackName = "updateFont", $changedFunction = ""); ?>
-		Font Size: <? PrintSettingSelect("FONT_SIZE", "FONT_SIZE", 0, 0, $defaultValue="20", getFontSizes(), $pluginName, $callbackName = "", $changedFunction = ""); ?>
-		Anti-Aliased: <?PrintSettingCheckbox("FONT_ANTIALIAS", "FONT_ANTIALIAS", 0, 0, "1", "", $pluginName , ""); ?></div> 
+		<br /><div>Font: <?php PrintSettingSelect("fontSelect", "FONT", 0, 0, $defaultValue="", getFontsInstalled(), $pluginName, $callbackName = "updateFont", $changedFunction = ""); ?>
+		Font Size: <?php PrintSettingSelect("FONT_SIZE", "FONT_SIZE", 0, 0, $defaultValue="20", getFontSizes(), $pluginName, $callbackName = "", $changedFunction = ""); ?>
+		Anti-Aliased: <?php PrintSettingCheckbox("FONT_ANTIALIAS", "FONT_ANTIALIAS", 0, 0, "1", "", $pluginName , ""); ?></div> 
 		
 		<div id= "divCanvas" class='ui-tabs-panel matrix-tool-bottom-panel'>
 			<table border=0>
@@ -257,7 +268,7 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 							</td>
 						</tr>
 						<tr><td>Current Color:</td><td><span id='currentColor'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>
-						<tr><td colspan='2'>Show Color Picker: <? PrintSettingCheckbox("Show Color Picker", "ShowColorPicker", 0, 0, "1", "0", $pluginName, "ShowColorPicker"); ?></td></tr>
+						<tr><td colspan='2'>Show Color Picker: <?php PrintSettingCheckbox("Show Color Picker", "ShowColorPicker", 0, 0, "1", "0", $pluginName, "ShowColorPicker"); ?></td></tr>
 						<tr><td valign='top' colspan='2'>
 						<div id="colpicker"></div>
 						</td></tr>
@@ -268,14 +279,14 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 		</div>
 		<p><b>If you set the scroll speed to 0, then the message will display on the center of the matrix <br/>
 		for the number of seconds set in the Duration</b></p> 
-		Scroll Speed: <? PrintSettingSelect("SCROLL_SPEED", "SCROLL_SPEED", 0, 0, $defaultValue="20", getScrollSpeed(), $pluginName, $callbackName = "ShowDuration", $changedFunction = ""); ?> </p>
-		<div id="showDuration" style= "<? echo $showScrollDiv; ?>">
-			Duration: <? PrintSettingSelect("DURATION", "DURATION", 0, 0, $defaultValue="10", getDuration(), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		Scroll Speed: <?php PrintSettingSelect("SCROLL_SPEED", "SCROLL_SPEED", 0, 0, $defaultValue="20", getScrollSpeed(), $pluginName, $callbackName = "ShowDuration", $changedFunction = ""); ?> </p>
+		<div id="showDuration" style= "<?php echo $showScrollDiv; ?>">
+			Duration: <?php PrintSettingSelect("DURATION", "DURATION", 0, 0, $defaultValue="10", getDuration(), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 		</div>
 		
-		<p>Matrix Name: <? PrintSettingSelect("OVERLAY_MODEL", "OVERLAY_MODEL", 0, 0, $defaultValue="", $values = GetOverlayList(), $pluginName, $callbackName = "", $changedFunction = ""); ?>
+		<p>Matrix Name: <?php PrintSettingSelect("OVERLAY_MODEL", "OVERLAY_MODEL", 0, 0, $defaultValue="", $values = GetOverlayList(), $pluginName, $callbackName = "", $changedFunction = ""); ?>
 		If this is blank, then you need to configure the correct Pixel Overlay Model</p>
-		<p>Overlay Mode: <? PrintSettingSelect("OVERLAY_MODE", "OVERLAY_MODE", 0, 0, "", Array("Full Overlay" => "1", "Transparent" => "2", "Transparent RGB" => "3"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
+		<p>Overlay Mode: <?php PrintSettingSelect("OVERLAY_MODE", "OVERLAY_MODE", 0, 0, "", Array("Full Overlay" => "1", "Transparent" => "2", "Transparent RGB" => "3"), $pluginName, $callbackName = "", $changedFunction = ""); ?> </p>
 		<p><h3>The Overlay mode determines how you want your message to display.</h3>
 		<ul>
 			<li>Full Overlay- This will blank out the model and only display your message</li>
@@ -285,8 +296,8 @@ $gitURL = "https://github.com/toddejohnson/FPP-Simple-Weather.git";
 			the colors will override what is currently being displayed</li> 
 		</ul>
 		
-		<p>To report a bug, please file it on the Simple Weather plugin project on Git:<a href= "<? echo $gitURL;?>" target=blank>Simple Weather Repository</a> </p>
-		<p>Host Location: <?  PrintSettingTextSaved("HOST_LOCATION", 0, 0, $maxlength = 16, $size = 16, $pluginName, $defaultValue = "127.0.0.1", $callbackName = "", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
+		<p>To report a bug, please file it on the Simple Weather plugin project on Git:<a href= "<?php echo $gitURL;?>" target=blank>Simple Weather Repository</a> </p>
+		<p>Host Location: <?php PrintSettingTextSaved("HOST_LOCATION", 0, 0, $maxlength = 16, $size = 16, $pluginName, $defaultValue = "127.0.0.1", $callbackName = "", $changedFunction = "", $inputType = "text", $sData = array());?> </p>
 		<p>The default location of 127.0.0.1 is used if you want to display your Weather on an Overlay Model directly connected to this device. <br />
 		You can send the Weather text to another FPP device by entering that IP address for the Host Location. The Host location will need <br />
 		to have the Pixel Overlay Model defined and this FPP will need to have the Pixel Overlay Model defined exactly as the Host FPP Device</p>
